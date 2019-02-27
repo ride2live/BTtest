@@ -66,9 +66,15 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(int error) {
+                    switch (error){
+                         case SpeechRecognizer.ERROR_NO_MATCH:
+                         case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                             startListen();
+                    }
+
                     Toast.makeText(MainActivity.this, String.valueOf(error), Toast.LENGTH_SHORT).show();
                     Timber.v("onError");
-                    startListen();
+                    //startListen();
                 }
 
                 @Override
@@ -131,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,1);
     }
     private void startListen(){
-        speechRecognizer.cancel();
+        stopListen();
         speechRecognizer.startListening(recognizerIntent);
     }
 }
